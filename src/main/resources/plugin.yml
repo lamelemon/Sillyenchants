@@ -1,0 +1,7 @@
+name: Silly enchants
+version: '1.0-SNAPSHOT'
+main: io.github.lamelemon.sillyEnchants.SillyEnchants
+api-version: '1.21'
+authors: [ lamius lemonius ]
+description: Adds custom enchantments
+website: https://youtu.be/dQw4w9WgXcQ
