@@ -1,0 +1,9 @@
+enchants:
+  beheading:
+    enabled: true
+    description: "Beheading"
+    max-level: 3
+    weight: 10
+    anvil-cost: 2
+    active-slots: MAINHAND
+    supported-item: [SWORDS, AXES]

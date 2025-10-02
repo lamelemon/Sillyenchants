@@ -1,4 +1,4 @@
-name: Silly enchants
+name: Sillyenchants
 version: '1.0-SNAPSHOT'
 main: io.github.lamelemon.sillyEnchants.SillyEnchants
 api-version: '1.21'
