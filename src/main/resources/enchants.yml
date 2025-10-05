@@ -1,9 +1,22 @@
-enchants:
-  beheading:
-    enabled: true
-    description: "Beheading"
-    max-level: 3
-    weight: 10
-    anvil-cost: 2
-    active-slots: MAINHAND
-    supported-item: [SWORDS, AXES]
+beheading:
+  disabled: false
+  description: "Beheading"
+  max-level: 3
+  weight: 10
+  anvil-cost: 2
+  active-slots:
+    - MAINHAND
+  supported-items:
+    - minecraft:swords
+    - minecraft:axes
+beheading2:
+  disabled: false
+  description: "Beheading2"
+  max-level: 3
+  weight: 10
+  anvil-cost: 2
+  active-slots:
+    - MAINHAND
+  supported-items:
+    - minecraft:swords
+    - minecraft:axes
