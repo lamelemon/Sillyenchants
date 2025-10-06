@@ -8,7 +8,6 @@ import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.data.EnchantmentRegistryEntry;
 import io.papermc.paper.registry.event.RegistryEvents;
 import io.papermc.paper.registry.keys.EnchantmentKeys;
-import io.papermc.paper.registry.set.RegistryKeySet;
 import io.papermc.paper.registry.set.RegistrySet;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -20,7 +19,8 @@ import org.bukkit.inventory.ItemType;
 
 import java.io.*;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
+import java.util.function.Function;
 
 public class EnchantmentBootstrap implements PluginBootstrap {
 
@@ -50,6 +50,16 @@ public class EnchantmentBootstrap implements PluginBootstrap {
 
                     context.getLogger().info("registering enchant " + id);
 
+                    List<ItemType> itemTypes = mapValid(configurationSection.getStringList("supported-items"), item -> itemRegistry.get(Key.key(item)));
+                    for (String item : configurationSection.getStringList("supported-items")) {
+                        ItemType itemType = itemRegistry.get(Key.key(item));
+                        if (itemType != null) {
+                            itemTypes.add(itemType);
+                        }
+                    }
+
+                    List<EquipmentSlotGroup> equipmentSlotGroups = mapValid(configurationSection.getStringList("active-slots"), EquipmentSlotGroup::getByName);
+
 
                     event.registry().register(
                             EnchantmentKeys.create(Key.key(pluginName + ":" + id)),
@@ -60,18 +70,8 @@ public class EnchantmentBootstrap implements PluginBootstrap {
                                         .maximumCost(EnchantmentRegistryEntry.EnchantmentCost.of(1, 1))
                                         .weight(configurationSection.getInt("weight", 10))
                                         .anvilCost(configurationSection.getInt("anvil-cost", 1))
-                                        .supportedItems(RegistrySet.keySetFromValues(
-                                                RegistryKey.ITEM,
-                                                List.of(
-                                                    ItemType.DIAMOND_SWORD,
-                                                    ItemType.NETHERITE_SWORD,
-                                                    ItemType.IRON_SWORD,
-                                                    ItemType.DIAMOND_AXE,
-                                                    ItemType.NETHERITE_AXE,
-                                                    ItemType.IRON_AXE
-                                                )
-                                        ))
-                                        .activeSlots(EquipmentSlotGroup.ANY);
+                                        .supportedItems(RegistrySet.keySetFromValues(RegistryKey.ITEM, itemTypes))
+                                        .activeSlots(equipmentSlotGroups);
                             }
                         );
 
@@ -81,5 +81,9 @@ public class EnchantmentBootstrap implements PluginBootstrap {
 
                 })
         );
+    }
+
+    private static <T> List<T> mapValid(List<String> keys, Function<String, T> mapper) {
+        return keys.stream().map(mapper).filter(Objects::nonNull).toList();
     }
 }
