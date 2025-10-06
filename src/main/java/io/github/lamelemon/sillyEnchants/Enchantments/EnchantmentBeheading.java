@@ -1,5 +1,6 @@
 package io.github.lamelemon.sillyEnchants.Enchantments;
 
+import io.github.lamelemon.sillyEnchants.SillyEnchants;
 import io.github.lamelemon.sillyEnchants.Utils.EnchantmentManager;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -11,7 +12,6 @@ import org.bukkit.inventory.ItemType;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 
 public class EnchantmentBeheading implements Listener {
@@ -25,7 +25,7 @@ public class EnchantmentBeheading implements Listener {
             EntityType.PIGLIN, ItemType.PIGLIN_HEAD,
             EntityType.ENDER_DRAGON, ItemType.DRAGON_HEAD
     ));
-    private final Enchantment enchantment = EnchantmentManager.getEnchant("Beheading");
+    private final Enchantment enchantment = EnchantmentManager.getEnchant("beheading");
 
     @EventHandler
     private void onEntityDeath(EntityDeathEvent event) {
@@ -38,8 +38,8 @@ public class EnchantmentBeheading implements Listener {
                 && killer.getInventory().getItemInMainHand().containsEnchantment(enchantment))
         {
             ItemStack item = killer.getInventory().getItemInMainHand();
-            entity.getWorld().dropItemNaturally(event.getEntity().getLocation(), heads.get(entity.getType()).createItemStack());
-            if ((double) item.getEnchantmentLevel(enchantment) / 10 >= Math.random()); {
+            float dropChance = (float) item.getEnchantmentLevel(enchantment) / 10;
+            if (dropChance >= Math.random()) {
                 entity.getWorld().dropItemNaturally(event.getEntity().getLocation(), heads.get(entity.getType()).createItemStack());
             }
         }

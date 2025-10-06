@@ -1,6 +1,7 @@
 package io.github.lamelemon.sillyEnchants;
 
 import io.github.lamelemon.sillyEnchants.Commands.SillyEnchantCommand;
+import io.github.lamelemon.sillyEnchants.Enchantments.EnchantmentBeheading;
 import io.github.lamelemon.sillyEnchants.Utils.EnchantmentManager;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
@@ -34,6 +35,7 @@ public final class SillyEnchants extends JavaPlugin {
         Registry<@NotNull Enchantment> reg = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT);
         reg.forEach(en -> getLogger().info("Enchantment loaded: " + en.getKey()));
         getLogger().info("SillyEnchants successfully loaded!");
+        getServer().getPluginManager().registerEvents(new EnchantmentBeheading(), this);
     }
 
     @Override
