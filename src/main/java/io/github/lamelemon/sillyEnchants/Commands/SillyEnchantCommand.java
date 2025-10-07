@@ -1,7 +1,6 @@
 package io.github.lamelemon.sillyEnchants.Commands;
 
-import io.github.lamelemon.sillyEnchants.SillyEnchants;
-import io.github.lamelemon.sillyEnchants.Utils.EnchantmentManager;
+import io.github.lamelemon.sillyEnchants.Utils.EnchantmentUtil;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.enchantments.Enchantment;
@@ -31,7 +30,6 @@ public class SillyEnchantCommand implements BasicCommand {
                 source.getSender().sendRichMessage("<red>Invalid level! Defaulting.");
             }
         }
-        SillyEnchants.getInstance().getLogger().info("Enchant name: " + EnchantmentManager.getEnchant(enchantName));
 
         if (source.getExecutor() instanceof Player player) {
             ItemStack item = player.getInventory().getItemInMainHand();
@@ -41,11 +39,10 @@ public class SillyEnchantCommand implements BasicCommand {
             }
 
             try {
-                Enchantment enchantment = EnchantmentManager.getEnchant(enchantName);
-                SillyEnchants.getInstance().getLogger().info("Enchantment var: " + enchantment.toString());
+                Enchantment enchantment = EnchantmentUtil.getEnchant(enchantName);
                 item.addUnsafeEnchantment(enchantment, level);
-            } catch (NullPointerException e) {
-                source.getSender().sendRichMessage("<red>Invalid enchantment!");
+            } catch (IllegalArgumentException e) {
+                source.getSender().sendRichMessage("<red>Invalid enchantment! Either the enchantment doesn't exist or it can't go on the item you're holding.");
             }
         }
 

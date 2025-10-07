@@ -16,6 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemType;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.List;
@@ -36,15 +37,16 @@ public class EnchantmentBootstrap implements PluginBootstrap {
         }
 
         YamlConfiguration config = YamlConfiguration.loadConfiguration(enchantmentConfigFile);
-        String pluginName = context.getPluginMeta().getName().toLowerCase();
 
         context.getLifecycleManager().registerEventHandler(
             RegistryEvents.ENCHANTMENT.compose().newHandler(event -> {
 
-                Registry<ItemType> itemRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ITEM);
+                Registry<@NotNull ItemType> itemRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ITEM);
+                String pluginName = context.getPluginMeta().getName().toLowerCase();
 
                 for (String id : config.getKeys(false)) {
                     ConfigurationSection configurationSection = config.getConfigurationSection(id);
+                    context.getLogger().info("registering enchantment {}", id);
 
                     // Register selected enchantment in the registry (order of methods doesn't matter)
                     // This section doesn't really need changing unless we want to add more configuration to the enchantment
@@ -63,7 +65,7 @@ public class EnchantmentBootstrap implements PluginBootstrap {
                                                 configurationSection.getInt("maximum-cost.base-cost", 1),
                                                 configurationSection.getInt("maximum-cost.additional-cost", 1)
                                         ))
-                                        .weight(configurationSection.getInt("weight", 0))
+                                        .weight(configurationSection.getInt("weight", 1))
                                         .anvilCost(configurationSection.getInt("anvil-cost", 1))
                                         .supportedItems(RegistrySet.keySetFromValues(RegistryKey.ITEM,
                                                 mapValid(configurationSection.getStringList("supported-items"), item -> itemRegistry.get(Key.key(item)))
@@ -72,7 +74,9 @@ public class EnchantmentBootstrap implements PluginBootstrap {
                                         );
                             }
                         );
+                    context.getLogger().info("registered: {}:{}", pluginName, id);
                     }
+                context.getLogger().info("registered enchants");
                 }) // look at all them brackets :O
         );
     }

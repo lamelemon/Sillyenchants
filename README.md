@@ -8,3 +8,6 @@ This is normal as it is generating the configuration file for the enchantments.
 If your server shuts down without restarting, you should be able to start up the server again.
 
 See [Guide](https://gist.github.com/Prof-Bloodstone/6367eb4016eaf9d1646a88772cdbbac5) if you'd like to make your server restart instead of having it shut down all the way.
+
+## Fun maths
+A desmos graph for most the enchantment calculations (e.g. shockwave strength) can be found [Here](https://www.desmos.com/calculator/j0dkngxew2). This probably won't be constantly up to date as I am updating it whenever I remember to.

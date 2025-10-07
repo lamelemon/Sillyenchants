@@ -1,8 +1,7 @@
 beheading:
   disabled: false
   description: "Beheading"
-  # Set weight to 0 if you wish for it to not be in the enchantment table
-  weight: 0
+  weight: 1
   max-level: 3
   minimum-cost:
     base-cost: 1
@@ -16,3 +15,19 @@ beheading:
   supported-items:
     - minecraft:swords
     - minecraft:axes
+shockwave:
+  disabled: false
+  description: "Shockwave"
+  weight: 1
+  max-level: 4
+  minimum-cost:
+    base-cost: 1
+    additional-cost: 1
+  maximum-cost:
+    base-cost: 1
+    additional-cost: 1
+  anvil-cost: 1
+  active_slots:
+    - MAINHAND
+  supported-items:
+    - minecraft:mace
