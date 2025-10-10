@@ -1,5 +1,6 @@
 package io.github.lamelemon.sillyEnchants.Commands;
 
+import io.github.lamelemon.sillyEnchants.SillyEnchants;
 import io.github.lamelemon.sillyEnchants.Utils.EnchantmentUtil;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -26,9 +27,7 @@ public class SillyEnchantCommand implements BasicCommand {
         if (args.length >= 2) {
             try {
                 level = Integer.parseInt(args[1]);
-            } catch (NumberFormatException e){
-                source.getSender().sendRichMessage("<red>Invalid level! Defaulting.");
-            }
+            } catch (NumberFormatException ignored) {}
         }
 
         if (source.getExecutor() instanceof Player player) {
@@ -40,14 +39,11 @@ public class SillyEnchantCommand implements BasicCommand {
 
             try {
                 Enchantment enchantment = EnchantmentUtil.getEnchant(enchantName);
+                SillyEnchants.getInstance().getLogger().info("Applying: " + enchantment);
                 item.addUnsafeEnchantment(enchantment, level);
             } catch (IllegalArgumentException e) {
                 source.getSender().sendRichMessage("<red>Invalid enchantment! Either the enchantment doesn't exist or it can't go on the item you're holding.");
             }
         }
-
-
-
-
     }
 }

@@ -3,6 +3,7 @@ package io.github.lamelemon.sillyEnchants;
 
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
+import io.papermc.paper.plugin.bootstrap.PluginProviderContext;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.data.EnchantmentRegistryEntry;
@@ -16,6 +17,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemType;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -25,18 +27,18 @@ import java.util.function.Function;
 
 // IDE may mark this as not used, it does get used as it is the bootstrapper.
 public class EnchantmentBootstrap implements PluginBootstrap {
+    private boolean bootstrapFailed = false;
 
     @Override
     public void bootstrap(BootstrapContext context) {
 
-        File enchantmentConfigFile = new File(context.getDataDirectory().toFile(), "enchants.yml");
-
-        if (!enchantmentConfigFile.exists()) {
-            context.getLogger().info("Config file not found, skipping bootstrap");
+        InputStream in = getClass().getResourceAsStream("/enchants.yml");
+        if (in == null) {
+            bootstrapFailed = true;
+            context.getLogger().info("Bootstrap has failed! Disabling plugin...");
             return;
         }
-
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(enchantmentConfigFile);
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(new InputStreamReader(in));
 
         context.getLifecycleManager().registerEventHandler(
             RegistryEvents.ENCHANTMENT.compose().newHandler(event -> {
@@ -46,7 +48,6 @@ public class EnchantmentBootstrap implements PluginBootstrap {
 
                 for (String id : config.getKeys(false)) {
                     ConfigurationSection configurationSection = config.getConfigurationSection(id);
-                    context.getLogger().info("registering enchantment {}", id);
 
                     // Register selected enchantment in the registry (order of methods doesn't matter)
                     // This section doesn't really need changing unless we want to add more configuration to the enchantment
@@ -79,6 +80,14 @@ public class EnchantmentBootstrap implements PluginBootstrap {
                 context.getLogger().info("registered enchants");
                 }) // look at all them brackets :O
         );
+    }
+
+    @Override
+    public JavaPlugin createPlugin(PluginProviderContext context) {
+        if (bootstrapFailed) {
+            return null;
+        }
+        return new SillyEnchants();
     }
 
     // Helper function to avoid repeating code when reading config (stay dry gang)

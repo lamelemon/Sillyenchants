@@ -19,13 +19,14 @@ public class EnchantmentBeheading implements Listener {
     private final HashMap<EntityType, ItemType> heads = new HashMap<>(Map.of(
             EntityType.SKELETON, ItemType.SKELETON_SKULL,
             EntityType.WITHER_SKELETON, ItemType.WITHER_SKELETON_SKULL,
+            EntityType.WITHER, ItemType.WITHER_SKELETON_SKULL,
             EntityType.ZOMBIE, ItemType.ZOMBIE_HEAD,
             EntityType.PLAYER, ItemType.PLAYER_HEAD,
             EntityType.CREEPER, ItemType.CREEPER_HEAD,
             EntityType.PIGLIN, ItemType.PIGLIN_HEAD,
             EntityType.ENDER_DRAGON, ItemType.DRAGON_HEAD
     ));
-    private final Enchantment enchantment = EnchantmentUtil.getEnchant(SillyEnchants.getPluginName() + ":" + "beheading");
+    private final Enchantment enchantment = EnchantmentUtil.getEnchant("behead");
 
     @EventHandler
     private void onEntityDeath(EntityDeathEvent event) {

@@ -1,4 +1,4 @@
-beheading:
+behead:
   disabled: false
   description: "Beheading"
   weight: 1
@@ -13,8 +13,19 @@ beheading:
   active-slots:
     - MAINHAND
   supported-items:
-    - minecraft:swords
-    - minecraft:axes
+    - netherite_sword
+    - diamond_sword
+    - iron_sword
+    - stone_sword
+    - golden_sword
+    - wooden_sword
+    - netherite_axe
+    - diamond_axe
+    - iron_axe
+    - stone_axe
+    - golden_axe
+    - wooden_axe
+
 shockwave:
   disabled: false
   description: "Shockwave"
@@ -30,4 +41,32 @@ shockwave:
   active_slots:
     - MAINHAND
   supported-items:
-    - minecraft:mace
+    - mace
+
+harvest:
+  disabled: false
+  description: "Harvesting"
+  weight: 1
+  max-level: 3
+  minimum-cost:
+    base-cost: 1
+    additional-cost: 1
+  maximum-cost:
+    base-cost: 1
+    additional-cost: 1
+  anvil-cost: 1
+  active_slots:
+    - MAINHAND
+  supported-items:
+    - netherite_axe
+    - diamond_axe
+    - iron_axe
+    - stone_axe
+    - golden_axe
+    - wooden_axe
+    - netherite_pickaxe
+    - diamond_pickaxe
+    - iron_pickaxe
+    - stone_pickaxe
+    - golden_pickaxe
+    - wooden_pickaxe
