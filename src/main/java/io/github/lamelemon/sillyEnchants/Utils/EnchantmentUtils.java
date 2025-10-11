@@ -10,7 +10,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.jetbrains.annotations.NotNull;
 
 
-public class EnchantmentUtil {
+public class EnchantmentUtils {
     private static final Registry<@NotNull Enchantment> enchantmentRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT);
 
     // Get the enchantment corresponding to the given key

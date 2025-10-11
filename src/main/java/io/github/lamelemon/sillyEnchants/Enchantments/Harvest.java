@@ -1,8 +1,5 @@
 package io.github.lamelemon.sillyEnchants.Enchantments;
 
-import io.github.lamelemon.sillyEnchants.SillyEnchants;
-import io.github.lamelemon.sillyEnchants.Utils.EnchantmentUtil;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
@@ -13,16 +10,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import static java.lang.Math.min;
 
-public class EnchantmentHarvest implements Listener {
-    private static final Enchantment enchantment = EnchantmentUtil.getEnchant("harvest");
-    private static final int blockBreakCap = 100;
+public class Harvest implements Listener, CustomEnchantment {
+    private final Enchantment enchantment;
+    private final int blockBreakCap;
     private static Player currentHarvester;
     private static ItemStack currentTool;
     private int blocksBroken;
@@ -41,6 +36,11 @@ public class EnchantmentHarvest implements Listener {
         Tag.REDSTONE_ORES
     ));
 
+    public Harvest(Enchantment enchantment, int blockBreakCap) {
+        this.enchantment = enchantment;
+        this.blockBreakCap = blockBreakCap;
+    }
+
     @EventHandler
     public void onBlockBreak (BlockBreakEvent event) {
 
@@ -54,38 +54,55 @@ public class EnchantmentHarvest implements Listener {
         if (blocksBroken == 0 || currentHarvester == player) return;
         currentHarvester = player;
 
-        HashSet<Tag<Material>> allowedTags = new HashSet<>();
+        Object allowedTags = null;
         if (Tag.ITEMS_AXES.isTagged(currentTool.getType())) {
             allowedTags = allowedAxeTags;
         } else if (Tag.ITEMS_PICKAXES.isTagged(currentTool.getType())) {
-            allowedTags = allowedPickaxeTags;
-        }
+            for (Tag<Material> tag : allowedPickaxeTags) {
+                if (tag.isTagged(event.getBlock().getType())) {
+                    allowedTags = tag;
+                    break;
+                }
+            }
+        } else return;
 
-        Harvester(event.getBlock(), player.getGameMode() != GameMode.CREATIVE, allowedTags);
+        Harvester(event.getBlock(), allowedTags);
 
         currentHarvester = null;
     }
 
     // Recursively finds and breaks blocks that are allowed to currently be broken
-    private void Harvester(Block block, boolean takeDamage, HashSet<Tag<Material>> allowedMaterials) {
+    private void Harvester(Block block, Object allowedMaterials) {
         // A bunch of checks to stop overt recursion
         // isTagged() can be how it is due to the first condition.
-        if ((block.getDrops(currentTool).isEmpty() && !Tag.LEAVES.isTagged(block.getType())) || blocksBroken <= 0 || !isTagged(block.getType(), allowedMaterials)) return;
+        if ((block.getDrops(currentTool).isEmpty() && !Tag.LEAVES.isTagged(block.getType()))
+                || blocksBroken <= 0
+        ) return;
+
+        boolean allowed = false;
+
+        if (allowedMaterials instanceof Tag<?> tag) {
+            allowed = isTagged(block.getType(), (Tag<Material>) tag);
+        } else if (allowedMaterials instanceof HashSet<?> set) {
+            allowed = isTagged(block.getType(), (HashSet<Tag<Material>>) set);
+        }
+
+        if (!allowed) return;
 
         // Break block and damage tool
         blocksBroken--;
-        block.breakNaturally(currentTool);
-        if (takeDamage) currentHarvester.damageItemStack(currentTool, 1);
+        currentHarvester.breakBlock(block);
+        //if (takeDamage) currentHarvester.damageItemStack(currentTool, 1);
 
         // Changing this logic changes the pattern made.
         // Currently, it prioritizes going up, as that is the usual way you'd cut a tree
         // (we do ordering due to the cap on blocks broken)
-        Harvester(block.getRelative(0, 1, 0), takeDamage, allowedMaterials); // check above
-        Harvester(block.getRelative(0, -1, 0), takeDamage, allowedMaterials);
+        Harvester(block.getRelative(0, 1, 0), allowedMaterials); // check above
+        Harvester(block.getRelative(0, -1, 0), allowedMaterials);
         for (int y = -1; y <= 1; y++ ) {
             for (int z = -1; z <= 1; z++) {
                 for (int x = -1; x <= 1; x++) {
-                    Harvester(block.getRelative(x, y, z), takeDamage, allowedMaterials);
+                    Harvester(block.getRelative(x, y, z), allowedMaterials);
                 }
             }
         }
@@ -99,5 +116,9 @@ public class EnchantmentHarvest implements Listener {
             }
         }
         return false;
+    }
+
+    private boolean isTagged(Material material, Tag<Material> allowedMaterial) {
+        return allowedMaterial.isTagged(material);
     }
 }

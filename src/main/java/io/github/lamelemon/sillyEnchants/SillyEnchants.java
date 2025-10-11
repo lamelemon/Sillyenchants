@@ -1,25 +1,53 @@
 package io.github.lamelemon.sillyEnchants;
 
 import io.github.lamelemon.sillyEnchants.Commands.SillyEnchantCommand;
-import io.github.lamelemon.sillyEnchants.Enchantments.EnchantmentBeheading;
-import io.github.lamelemon.sillyEnchants.Enchantments.EnchantmentHarvest;
-import io.github.lamelemon.sillyEnchants.Enchantments.EnchantmentShockwave;
-import io.papermc.paper.registry.RegistryAccess;
-import io.papermc.paper.registry.RegistryKey;
-import org.bukkit.Registry;
-import org.bukkit.enchantments.Enchantment;
+import io.github.lamelemon.sillyEnchants.Enchantments.Beheading;
+import io.github.lamelemon.sillyEnchants.Enchantments.Harvest;
+import io.github.lamelemon.sillyEnchants.Enchantments.Shockwave;
+import io.github.lamelemon.sillyEnchants.Enchantments.Smelting;
+import io.github.lamelemon.sillyEnchants.Utils.EnchantmentUtils;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.InputStreamReader;
+import java.util.Objects;
 
 public final class SillyEnchants extends JavaPlugin {
     private static SillyEnchants instance;
+    private static YamlConfiguration enchantmentConfig;
 
     @Override
     public void onEnable() {
         instance = this;
+        PluginManager pluginManager = getServer().getPluginManager();
+        File enchantmentConfigFile = new File(getDataFolder(), "enchantments.yml");
+        if (!new File(getDataFolder(), "enchantments.yml").exists()) {
+            saveResource("enchantments.yml", true);
+        }
+        enchantmentConfig = YamlConfiguration.loadConfiguration(enchantmentConfigFile);
+
         registerCommand("SillyEnchant", new SillyEnchantCommand());
-        getServer().getPluginManager().registerEvents(new EnchantmentBeheading(), this);
-        getServer().getPluginManager().registerEvents(new EnchantmentShockwave(), this);
-        getServer().getPluginManager().registerEvents(new EnchantmentHarvest(), this);
+
+        pluginManager.registerEvents(
+                new Beheading(EnchantmentUtils.getEnchant("beheading")),
+                this
+        );
+        pluginManager.registerEvents(
+                new Shockwave(EnchantmentUtils.getEnchant("shockwave")),
+                this
+        );
+        pluginManager.registerEvents(
+                new Harvest(EnchantmentUtils.getEnchant("harvesting"),
+                enchantmentConfig.getInt("harvesting.max-blocks-broken")),
+                this
+        );
+        pluginManager.registerEvents(
+                new Smelting(EnchantmentUtils.getEnchant("smelting"),
+                        Smelting.parseSmeltables(Objects.requireNonNull(enchantmentConfig.getConfigurationSection("smelting.smeltable-items")))),
+                this
+        );
         getLogger().info("SillyEnchants successfully loaded!");
     }
 
@@ -36,4 +64,6 @@ public final class SillyEnchants extends JavaPlugin {
     public static String getPluginName() {
         return instance.getName().toLowerCase();
     }
+
+    public static YamlConfiguration getEnchantmentConfig() { return enchantmentConfig; }
 }

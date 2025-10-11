@@ -1,7 +1,5 @@
 package io.github.lamelemon.sillyEnchants.Enchantments;
 
-import io.github.lamelemon.sillyEnchants.SillyEnchants;
-import io.github.lamelemon.sillyEnchants.Utils.EnchantmentUtil;
 import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
@@ -13,9 +11,12 @@ import org.bukkit.inventory.ItemStack;
 
 import static java.lang.Math.pow;
 
-public class EnchantmentShockwave implements Listener {
-    private final String name = "shockwave";
-    private final Enchantment enchantment = EnchantmentUtil.getEnchant(name);
+public class Shockwave implements Listener, CustomEnchantment {
+    private final Enchantment enchantment;
+
+    public Shockwave(Enchantment enchantment) {
+        this.enchantment = enchantment;
+    }
 
     @EventHandler
     private void onEntityHit(EntityDamageByEntityEvent event) {

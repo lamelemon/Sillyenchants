@@ -1,7 +1,5 @@
 package io.github.lamelemon.sillyEnchants.Enchantments;
 
-import io.github.lamelemon.sillyEnchants.SillyEnchants;
-import io.github.lamelemon.sillyEnchants.Utils.EnchantmentUtil;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -14,7 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class EnchantmentBeheading implements Listener {
+public class Beheading implements CustomEnchantment, Listener {
+    private final Enchantment enchantment;
 
     private final HashMap<EntityType, ItemType> heads = new HashMap<>(Map.of(
             EntityType.SKELETON, ItemType.SKELETON_SKULL,
@@ -26,7 +25,10 @@ public class EnchantmentBeheading implements Listener {
             EntityType.PIGLIN, ItemType.PIGLIN_HEAD,
             EntityType.ENDER_DRAGON, ItemType.DRAGON_HEAD
     ));
-    private final Enchantment enchantment = EnchantmentUtil.getEnchant("behead");
+
+    public Beheading(Enchantment enchantment) {
+        this.enchantment = enchantment;
+    }
 
     @EventHandler
     private void onEntityDeath(EntityDeathEvent event) {

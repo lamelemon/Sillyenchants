@@ -1,4 +1,4 @@
-behead:
+beheading:
   disabled: false
   description: "Beheading"
   weight: 1
@@ -43,7 +43,7 @@ shockwave:
   supported-items:
     - mace
 
-harvest:
+harvesting:
   disabled: false
   description: "Harvesting"
   weight: 1
@@ -70,3 +70,33 @@ harvest:
     - stone_pickaxe
     - golden_pickaxe
     - wooden_pickaxe
+  max-blocks-broken: 100 # multiplier for how many blocks each tier of the enchantment may break at most
+
+smelting:
+  disabled: false
+  description: "Smelting"
+  weight: 1
+  max-level: 3
+  minimum-cost:
+    base-cost: 1
+    additional-cost: 1
+  maximum-cost:
+    base-cost: 1
+    additional-cost: 1
+  anvil-cost: 1
+  active_slots:
+    - MAINHAND
+  supported-items:
+    - netherite_axe
+    - diamond_axe
+    - iron_axe
+    - stone_axe
+    - golden_axe
+    - wooden_axe
+  smeltable-items: # stores item types with the key being the smelt result and values the sources
+    RAW_IRON: IRON_INGOT
+    RAW_IRON_BLOCK: IRON_BLOCK
+    RAW_GOLD: GOLD_INGOT
+    RAW_GOLD_BLOCK: GOLD_BLOCK
+    RAW_COPPER: COPPER_INGOT
+    ANCIENT_DEBRIS: NETHERITE_SCRAP

@@ -1,7 +1,7 @@
 package io.github.lamelemon.sillyEnchants.Commands;
 
 import io.github.lamelemon.sillyEnchants.SillyEnchants;
-import io.github.lamelemon.sillyEnchants.Utils.EnchantmentUtil;
+import io.github.lamelemon.sillyEnchants.Utils.EnchantmentUtils;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.enchantments.Enchantment;
@@ -38,7 +38,7 @@ public class SillyEnchantCommand implements BasicCommand {
             }
 
             try {
-                Enchantment enchantment = EnchantmentUtil.getEnchant(enchantName);
+                Enchantment enchantment = EnchantmentUtils.getEnchant(enchantName);
                 SillyEnchants.getInstance().getLogger().info("Applying: " + enchantment);
                 item.addUnsafeEnchantment(enchantment, level);
             } catch (IllegalArgumentException e) {
