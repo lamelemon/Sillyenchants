@@ -100,3 +100,21 @@ smelting:
     RAW_GOLD_BLOCK: GOLD_BLOCK
     RAW_COPPER: COPPER_INGOT
     ANCIENT_DEBRIS: NETHERITE_SCRAP
+
+bounce:
+  disabled: false
+  description: "Bounce"
+  weight: 1
+  max-level: 3
+  minimum-cost:
+    base-cost: 1
+    additional-cost: 1
+  maximum-cost:
+    base-cost: 1
+    additional-cost: 1
+  anvil-cost: 1
+  active_slots:
+    - MAINHAND
+  supported-items:
+    - bow
+    - crossbow

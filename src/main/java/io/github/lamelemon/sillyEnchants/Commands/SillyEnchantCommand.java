@@ -37,6 +37,11 @@ public class SillyEnchantCommand implements BasicCommand {
                 return;
             }
 
+            if (!player.isOp()) {
+                source.getSender().sendRichMessage("<red>You must be an Operator to use this!");
+                return;
+            }
+
             try {
                 Enchantment enchantment = EnchantmentUtils.getEnchant(enchantName);
                 SillyEnchants.getInstance().getLogger().info("Applying: " + enchantment);

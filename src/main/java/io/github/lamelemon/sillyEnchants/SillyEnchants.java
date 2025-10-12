@@ -1,10 +1,7 @@
 package io.github.lamelemon.sillyEnchants;
 
 import io.github.lamelemon.sillyEnchants.Commands.SillyEnchantCommand;
-import io.github.lamelemon.sillyEnchants.Enchantments.Beheading;
-import io.github.lamelemon.sillyEnchants.Enchantments.Harvest;
-import io.github.lamelemon.sillyEnchants.Enchantments.Shockwave;
-import io.github.lamelemon.sillyEnchants.Enchantments.Smelting;
+import io.github.lamelemon.sillyEnchants.Enchantments.*;
 import io.github.lamelemon.sillyEnchants.Utils.EnchantmentUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -22,11 +19,8 @@ public final class SillyEnchants extends JavaPlugin {
     public void onEnable() {
         instance = this;
         PluginManager pluginManager = getServer().getPluginManager();
-        File enchantmentConfigFile = new File(getDataFolder(), "enchantments.yml");
-        if (!new File(getDataFolder(), "enchantments.yml").exists()) {
-            saveResource("enchantments.yml", true);
-        }
-        enchantmentConfig = YamlConfiguration.loadConfiguration(enchantmentConfigFile);
+        saveResource("enchantments.yml", true);
+        enchantmentConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "enchantments.yml"));
 
         registerCommand("SillyEnchant", new SillyEnchantCommand());
 
@@ -46,6 +40,10 @@ public final class SillyEnchants extends JavaPlugin {
         pluginManager.registerEvents(
                 new Smelting(EnchantmentUtils.getEnchant("smelting"),
                         Smelting.parseSmeltables(Objects.requireNonNull(enchantmentConfig.getConfigurationSection("smelting.smeltable-items")))),
+                this
+        );
+        pluginManager.registerEvents(
+                new Bounce(EnchantmentUtils.getEnchant("bounce")),
                 this
         );
         getLogger().info("SillyEnchants successfully loaded!");
