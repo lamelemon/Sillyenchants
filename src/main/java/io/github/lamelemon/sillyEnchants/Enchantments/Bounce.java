@@ -21,6 +21,7 @@ import java.util.Objects;
 public class Bounce implements Listener, CustomEnchantment {
     private final Enchantment enchantment;
     private final NamespacedKey arrowKey = new NamespacedKey(SillyEnchants.getInstance(), "bounces");
+    private final NamespacedKey initialVelocityKey = new NamespacedKey(SillyEnchants.getInstance(), "initialVelocity");
 
     public Bounce(Enchantment enchantment) {
         this.enchantment = enchantment;
@@ -36,28 +37,34 @@ public class Bounce implements Listener, CustomEnchantment {
                     PersistentDataType.INTEGER,
                     bow.getEnchantmentLevel(enchantment)
             );
+            dataContainer.set(initialVelocityKey,
+                    PersistentDataType.DOUBLE,
+                    event.getProjectile().getVelocity().length()
+            );
         }
     }
 
+    // Vector math WOOHOO
     @EventHandler
     public void projectileHitEvent(ProjectileHitEvent event) {
         Projectile projectile = event.getEntity();
-        int bounces = Objects.requireNonNullElse(projectile.getPersistentDataContainer().get(arrowKey, PersistentDataType.INTEGER), 0);
+        PersistentDataContainer dataContainer = projectile.getPersistentDataContainer();
+        int bounces = Objects.requireNonNullElse(dataContainer.get(arrowKey, PersistentDataType.INTEGER), 0);
 
         if (event.getHitBlockFace() == null || bounces <= 0 || projectile.getVelocity().length() < 0.5) return;
+        SillyEnchants.getInstance().getLogger().info("velocity rn is " + projectile.getVelocity());
 
         projectile.getPersistentDataContainer().set(arrowKey, PersistentDataType.INTEGER, bounces - 1);
 
+        double shootMag = Objects.requireNonNullElse(projectile.getPersistentDataContainer().get(initialVelocityKey, PersistentDataType.DOUBLE), 0D);
         Vector normal = event.getHitBlockFace().getDirection();
-        Vector startVel = projectile.getVelocity().clone();
-
+        Vector startVel = projectile.getVelocity().clone().multiply(shootMag);
         double dot = startVel.dot(normal);
         Vector reflect = startVel.clone().subtract(normal.clone().multiply(2 * dot));
 
-        SillyEnchants.getInstance().getLogger().info("startvel " + startVel + " velocity is " + projectile.getVelocity() + " hit block face " + event.getHitBlockFace() + " hit block direction " + normal);
-
+        // Unstick arrow from the hit block
         projectile.teleport(
-                reflect.clone().multiply(0.05)
+                reflect.clone().multiply(0.05) // multiply by 0.05 to account for 1 tick of delay
                         .add(projectile.getLocation().toVector())
                         .toLocation(projectile.getWorld())
         );
