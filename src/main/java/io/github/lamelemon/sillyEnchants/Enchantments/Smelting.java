@@ -28,12 +28,14 @@ public class Smelting implements Listener {
 
         for (Item item : event.getItems()) {
             ItemStack itemStack = item.getItemStack();
+            // Check if item drop can be smelted
             if (smeltables.containsKey(itemStack.getType())) {
-                item.setItemStack(new ItemStack(smeltables.get(itemStack.getType()), itemStack.getAmount()));
+                item.setItemStack(new ItemStack(smeltables.get(itemStack.getType()), itemStack.getAmount())); // Convert to smelted item
             }
         }
     }
 
+    // Parses the items into a hashmap that may be smelted by the enchantment
     public static HashMap<Material, Material> parseSmeltables(ConfigurationSection smeltableItems) {
         HashMap<Material, Material> returnable = new HashMap<>();
         for (String key : smeltableItems.getKeys(false)) {

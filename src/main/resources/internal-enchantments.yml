@@ -1,0 +1,220 @@
+# This file is for any config of enchantments that we don't want users touching (e.g. error-prone configuration)
+
+beheading:
+  description: "Beheading"
+  weight: 1
+  max-level: 3
+  minimum-cost:
+    base-cost: 1
+    additional-cost: 1
+  maximum-cost:
+    base-cost: 1
+    additional-cost: 1
+  anvil-cost: 1
+  active-slots:
+    - MAINHAND
+  supported-items:
+    - netherite_sword
+    - diamond_sword
+    - iron_sword
+    - stone_sword
+    - golden_sword
+    - wooden_sword
+    - netherite_axe
+    - diamond_axe
+    - iron_axe
+    - stone_axe
+    - golden_axe
+    - wooden_axe
+
+shockwave:
+  description: "Shockwave"
+  weight: 1
+  max-level: 5
+  minimum-cost:
+    base-cost: 1
+    additional-cost: 1
+  maximum-cost:
+    base-cost: 1
+    additional-cost: 1
+  anvil-cost: 1
+  active_slots:
+    - MAINHAND
+  supported-items:
+    - mace
+  exclusive-with:
+    - density
+    - breach
+    - smite
+    - bane_of_arthropods
+
+harvesting:
+  description: "Harvesting"
+  weight: 1
+  max-level: 3
+  minimum-cost:
+    base-cost: 1
+    additional-cost: 1
+  maximum-cost:
+    base-cost: 1
+    additional-cost: 1
+  anvil-cost: 1
+  active_slots:
+    - MAINHAND
+  supported-items:
+    - netherite_axe
+    - diamond_axe
+    - iron_axe
+    - stone_axe
+    - golden_axe
+    - wooden_axe
+    - netherite_pickaxe
+    - diamond_pickaxe
+    - iron_pickaxe
+    - stone_pickaxe
+    - golden_pickaxe
+    - wooden_pickaxe
+  ore-structure:
+    - COAL_ORE
+    - DEEPSLATE_COAL_ORE
+    - COPPER_ORE
+    - DEEPSLATE_COPPER_ORE
+    - DIAMOND_ORE
+    - DEEPSLATE_DIAMOND_ORE
+    - GOLD_ORE
+    - DEEPSLATE_GOLD_ORE
+    - EMERALD_ORE
+    - DEEPSLATE_EMERALD_ORE
+    - IRON_ORE
+    - DEEPSLATE_IRON_ORE
+    - LAPIS_ORE
+    - DEEPSLATE_LAPIS_ORE
+    - REDSTONE_ORE
+    - DEEPSLATE_REDSTONE_ORE
+  tree-structure:
+    OAK_:
+      - OAK_LOG
+      - AZALEA_LEAVES
+      - FLOWERING_AZALEA_LEAVES
+      - OAK_LEAVES
+    SPRUCE_:
+      - SPRUCE_LOG
+      - SPRUCE_LEAVES
+    BIRCH_:
+      - BIRCH_LOG
+      - BIRCH_LEAVES
+    JUNGLE_:
+      - JUNGLE_LOG
+      - JUNGLE_LEAVES
+    ACACIA_:
+      - ACACIA_LOG
+      - ACACIA_LEAVES
+    DARK_OAK_:
+      - DARK_OAK_LOG
+      - DARK_OAK_LEAVES
+    MANGROVE_:
+      - MANGROVE_LOG
+      - MANGROVE_ROOTS
+    CHERRY_:
+      - CHERRY_LOG
+      - CHERRY_LEAVES
+    PALE_OAK_:
+      - PALE_OAK_LOG
+      - PALE_OAK_LEAVES
+    CRIMSON_:
+      - CRIMSON_STEM
+      - NETHER_WART_BLOCK
+      - SHROOMLIGHT
+    WARPED_:
+      - WARPED_STEM
+      - WARPED_WART_BLOCK
+      - SHROOMLIGHT
+
+smelting:
+  description: "Smelting"
+  weight: 1
+  max-level: 3
+  minimum-cost:
+    base-cost: 1
+    additional-cost: 1
+  maximum-cost:
+    base-cost: 1
+    additional-cost: 1
+  anvil-cost: 1
+  active_slots:
+    - MAINHAND
+  supported-items:
+    - netherite_axe
+    - diamond_axe
+    - iron_axe
+    - stone_axe
+    - golden_axe
+    - wooden_axe
+  exclusive-with:
+    - silk_touch
+
+bounce:
+  description: "Bounce"
+  weight: 1
+  max-level: 3
+  minimum-cost:
+    base-cost: 1
+    additional-cost: 1
+  maximum-cost:
+    base-cost: 1
+    additional-cost: 1
+  anvil-cost: 1
+  active_slots:
+    - MAINHAND
+  supported-items:
+    - bow
+    - crossbow
+
+updraft:
+  description: "Updraft"
+  weight: 1
+  max-level: 3
+  minimum-cost:
+    base-cost: 1
+    additional-cost: 1
+  maximum-cost:
+    base-cost: 1
+    additional-cost: 1
+  anvil-cost: 1
+  active_slots:
+    - CHEST
+  supported-items:
+    - elytra
+
+gouging:
+  description: "Gouging"
+  weight: 1
+  max-level: 3
+  minimum-cost:
+    base-cost: 1
+    additional-cost: 1
+  maximum-cost:
+    base-cost: 1
+    additional-cost: 1
+  anvil-cost: 1
+  active_slots:
+    - MAINHAND
+  supported-items:
+    - netherite_hoe
+    - diamond_hoe
+    - iron_hoe
+    - golden_hoe
+    - stone_hoe
+    - wooden_hoe
+    - netherite_pickaxe
+    - diamond_pickaxe
+    - iron_pickaxe
+    - golden_pickaxe
+    - stone_pickaxe
+    - wooden_pickaxe
+    - netherite_shovel
+    - diamond_shovel
+    - iron_shovel
+    - golden_shovel
+    - stone_shovel
+    - wooden_shovel

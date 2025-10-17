@@ -12,14 +12,13 @@ import java.util.Objects;
 
 public final class SillyEnchants extends JavaPlugin {
     private static SillyEnchants instance;
-    private static YamlConfiguration enchantmentConfig;
 
     @Override
     public void onEnable() {
         instance = this;
         PluginManager pluginManager = getServer().getPluginManager();
         saveResource("enchantments.yml", true);
-        enchantmentConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "enchantments.yml"));
+        YamlConfiguration enchantmentConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "enchantments.yml"));
 
         registerCommand("SillyEnchant", new SillyEnchantCommand());
 
@@ -32,8 +31,11 @@ public final class SillyEnchants extends JavaPlugin {
                 this
         );
         pluginManager.registerEvents(
-                new Harvest(EnchantmentUtils.getEnchant("harvesting"),
-                enchantmentConfig.getInt("harvesting.max-blocks-broken")),
+                new Harvesting(EnchantmentUtils.getEnchant("harvesting"),
+                enchantmentConfig.getInt("harvesting.max-tree-blocks-broken"),
+                enchantmentConfig.getInt("harvesting.max-ore-blocks-broken"),
+                Harvesting.parseTrees(Objects.requireNonNull(enchantmentConfig.getConfigurationSection("tree-structure"))),
+                Harvesting.parseSet(Objects.requireNonNull(enchantmentConfig.getConfigurationSection("ore-structure")))),
                 this
         );
         pluginManager.registerEvents(

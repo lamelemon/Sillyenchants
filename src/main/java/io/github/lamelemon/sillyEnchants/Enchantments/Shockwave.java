@@ -31,13 +31,16 @@ public class Shockwave implements Listener, CustomEnchantment {
         if (entityEquipment == null) {
             return;
         }
+
         ItemStack item = entityEquipment.getItemInMainHand();
         if (item.containsEnchantment(enchantment)) {
+
             Location explosionPoint = event.getDamager().getLocation().toVector().midpoint(event.getEntity().getLocation().toVector()).toLocation(event.getDamager().getWorld());
             int level = item.getEnchantmentLevel(enchantment);
+
             damager.getWorld().createExplosion(damager,
                     explosionPoint,
-                    (float) pow(level * damager.getFallDistance(), 1 / Math.E),
+                    (float) pow(level * damager.getFallDistance(), 1 / Math.E),  // Don't question it
                     false,
                     false
             );

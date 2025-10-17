@@ -33,7 +33,7 @@ public class EnchantmentBootstrap implements PluginBootstrap {
     @Override
     public void bootstrap(BootstrapContext context) {
 
-        InputStream in = getClass().getResourceAsStream("/enchantments.yml");
+        InputStream in = getClass().getResourceAsStream("/internal-enchantments.yml");
         if (in == null) {
             bootstrapFailed = true;
             context.getLogger().info("Bootstrap has failed! Disabling plugin...");
