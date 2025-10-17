@@ -15,6 +15,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Registry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -44,6 +45,7 @@ public class EnchantmentBootstrap implements PluginBootstrap {
             RegistryEvents.ENCHANTMENT.compose().newHandler(event -> {
 
                 Registry<@NotNull ItemType> itemRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ITEM);
+                Registry<@NotNull Enchantment> enchantmentRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT);
                 String pluginName = context.getPluginMeta().getName().toLowerCase();
 
                 for (String id : config.getKeys(false)) {
@@ -69,10 +71,22 @@ public class EnchantmentBootstrap implements PluginBootstrap {
                                         .weight(configurationSection.getInt("weight", 1))
                                         .anvilCost(configurationSection.getInt("anvil-cost", 1))
                                         .supportedItems(RegistrySet.keySetFromValues(RegistryKey.ITEM,
-                                                mapValid(configurationSection.getStringList("supported-items"), item -> itemRegistry.get(Key.key(item)))
+                                                mapValid(configurationSection.getStringList("supported-items"),
+                                                        item -> itemRegistry.get(Key.key(item))
+                                                )
                                         ))
-                                        .activeSlots(mapValid(configurationSection.getStringList("active-slots"), EquipmentSlotGroup::getByName)
-                                        );
+                                        .primaryItems(RegistrySet.keySetFromValues(RegistryKey.ITEM,
+                                                mapValid(configurationSection.getStringList("primary-items"),
+                                                        item -> itemRegistry.get(Key.key(item))
+                                                )
+                                        ))
+                                        .activeSlots(
+                                                mapValid(configurationSection.getStringList("active-slots"), EquipmentSlotGroup::getByName
+                                                ))
+                                        .exclusiveWith(RegistrySet.keySetFromValues(RegistryKey.ENCHANTMENT,
+                                                mapValid(configurationSection.getStringList("exclusive-with"), enchantment -> enchantmentRegistry.get(Key.key(enchantment))
+                                                )
+                                        ));
                             }
                         );
                     context.getLogger().info("registered: {}:{}", pluginName, id);

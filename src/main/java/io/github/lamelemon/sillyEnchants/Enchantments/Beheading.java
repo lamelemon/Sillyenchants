@@ -37,9 +37,8 @@ public class Beheading implements CustomEnchantment, Listener {
 
         if (
                 killer != null
-                && heads.containsKey(entity.getType())
-                && killer.getInventory().getItemInMainHand().containsEnchantment(enchantment))
-        {
+                        && heads.containsKey(entity.getType())
+                        && killer.getInventory().getItemInMainHand().containsEnchantment(enchantment)) {
             ItemStack item = killer.getInventory().getItemInMainHand();
             float dropChance = (float) item.getEnchantmentLevel(enchantment) / 255;
             if (dropChance >= Math.random()) {

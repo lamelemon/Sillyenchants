@@ -30,7 +30,7 @@ shockwave:
   disabled: false
   description: "Shockwave"
   weight: 1
-  max-level: 4
+  max-level: 5
   minimum-cost:
     base-cost: 1
     additional-cost: 1
@@ -42,6 +42,11 @@ shockwave:
     - MAINHAND
   supported-items:
     - mace
+  exclusive-with:
+    - density
+    - breach
+    - smite
+    - bane_of_arthropods
 
 harvesting:
   disabled: false
@@ -93,6 +98,8 @@ smelting:
     - stone_axe
     - golden_axe
     - wooden_axe
+  exclusive-with:
+    - silk_touch
   smeltable-items: # stores item types with the key being the smelt result and values the sources
     RAW_IRON: IRON_INGOT
     RAW_IRON_BLOCK: IRON_BLOCK

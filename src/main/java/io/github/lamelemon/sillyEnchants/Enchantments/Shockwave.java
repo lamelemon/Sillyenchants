@@ -1,6 +1,6 @@
 package io.github.lamelemon.sillyEnchants.Enchantments;
 
-import io.github.lamelemon.sillyEnchants.SillyEnchants;
+import org.bukkit.Location;
 import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
@@ -10,7 +10,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
+import static com.google.common.primitives.Floats.min;
 import static java.lang.Math.pow;
+
 
 public class Shockwave implements Listener, CustomEnchantment {
     private final Enchantment enchantment;
@@ -32,9 +34,11 @@ public class Shockwave implements Listener, CustomEnchantment {
         }
         ItemStack item = entityEquipment.getItemInMainHand();
         if (item.containsEnchantment(enchantment)) {
+            Location explosionPoint = event.getDamager().getLocation().toVector().midpoint(event.getEntity().getLocation().toVector()).toLocation(event.getDamager().getWorld());
+            int level = item.getEnchantmentLevel(enchantment);
             damager.getWorld().createExplosion(damager,
-                    event.getDamager().getLocation(),
-                    (float) pow(item.getEnchantmentLevel(enchantment) * damager.getFallDistance(), 1.0 / Math.PI),
+                    explosionPoint,
+                    (float) pow(level * damager.getFallDistance(), 1 / Math.E),
                     false,
                     false
             );

@@ -52,7 +52,6 @@ public class Bounce implements Listener, CustomEnchantment {
         int bounces = Objects.requireNonNullElse(dataContainer.get(arrowKey, PersistentDataType.INTEGER), 0);
 
         if (event.getHitBlockFace() == null || bounces <= 0 || projectile.getVelocity().length() < 0.5) return;
-        SillyEnchants.getInstance().getLogger().info("velocity rn is " + projectile.getVelocity());
 
         projectile.getPersistentDataContainer().set(arrowKey, PersistentDataType.INTEGER, bounces - 1);
 
@@ -71,7 +70,6 @@ public class Bounce implements Listener, CustomEnchantment {
 
         Bukkit.getScheduler().runTaskLater(SillyEnchants.getInstance(), () -> {
             projectile.setVelocity(reflect);
-            SillyEnchants.getInstance().getLogger().info("velocity is " + projectile.getVelocity());
         },
                 1
         );
