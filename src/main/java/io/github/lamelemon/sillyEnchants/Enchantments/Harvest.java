@@ -21,10 +21,12 @@ public class Harvest implements Listener, CustomEnchantment {
     private static Player currentHarvester;
     private static ItemStack currentTool;
     private int blocksBroken;
+    
     private static final HashSet<Tag<Material>> allowedAxeTags = new HashSet<>(Set.of(
             Tag.LOGS,
             Tag.LEAVES
     ));
+
     private static final HashSet<Tag<Material>> allowedPickaxeTags = new HashSet<>(Set.of(
         Tag.COAL_ORES,
         Tag.COPPER_ORES,

@@ -8,7 +8,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.InputStreamReader;
 import java.util.Objects;
 
 public final class SillyEnchants extends JavaPlugin {
@@ -46,6 +45,14 @@ public final class SillyEnchants extends JavaPlugin {
                 new Bounce(EnchantmentUtils.getEnchant("bounce")),
                 this
         );
+        pluginManager.registerEvents(
+                new Updraft(EnchantmentUtils.getEnchant("updraft")),
+                this
+        );
+        pluginManager.registerEvents(
+                new Gouging(EnchantmentUtils.getEnchant("gouging")),
+                this
+        );
         getLogger().info("SillyEnchants successfully loaded!");
     }
 
@@ -62,6 +69,4 @@ public final class SillyEnchants extends JavaPlugin {
     public static String getPluginName() {
         return instance.getName().toLowerCase();
     }
-
-    public static YamlConfiguration getEnchantmentConfig() { return enchantmentConfig; }
 }

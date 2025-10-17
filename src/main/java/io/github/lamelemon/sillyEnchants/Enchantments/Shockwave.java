@@ -10,7 +10,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
-import static com.google.common.primitives.Floats.min;
 import static java.lang.Math.pow;
 
 
@@ -22,7 +21,7 @@ public class Shockwave implements Listener, CustomEnchantment {
     }
 
     @EventHandler
-    private void onEntityHit(EntityDamageByEntityEvent event) {
+    public void onEntityHit(EntityDamageByEntityEvent event) {
         if (event.getDamageSource().getDamageType() != DamageType.MACE_SMASH) {
             return;
         }
