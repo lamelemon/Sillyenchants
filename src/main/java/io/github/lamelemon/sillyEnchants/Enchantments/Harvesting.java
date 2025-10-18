@@ -1,5 +1,6 @@
 package io.github.lamelemon.sillyEnchants.Enchantments;
 
+import io.github.lamelemon.sillyEnchants.SillyEnchants;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
@@ -13,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
 import static java.lang.Math.min;
@@ -22,7 +24,6 @@ public class Harvesting implements Listener, CustomEnchantment {
     private final int treeBlockBreakCap;
     private final int oreBlockBreakCap;
     private static Player currentHarvester;
-    private static ItemStack currentTool;
     private int blocksBreakable;
 
     private final HashSet<Material> allowedOres;
@@ -42,7 +43,7 @@ public class Harvesting implements Listener, CustomEnchantment {
         Player player = event.getPlayer();
         if (!player.isSneaking()) return;
 
-        currentTool = player.getInventory().getItemInMainHand();
+        ItemStack currentTool = player.getInventory().getItemInMainHand();
 
         // 1st condition basically checks if the current tool has the enchantment
         if (!currentTool.containsEnchantment(enchantment) || currentHarvester == player) return;
@@ -74,7 +75,6 @@ public class Harvesting implements Listener, CustomEnchantment {
         // Changing this logic changes the pattern that gets made.
         // Currently, it prioritizes going up, as that is the usual way you'd cut a tree
         // (we do ordering due to the cap on blocks broken)
-        Harvester(block.getRelative(0, 1, 0), allowedOre);
         for (int y = -1; y <= 1; y++ ) {
             for (int z = -1; z <= 1; z++) {
                 for (int x = -1; x <= 1; x++) {
@@ -99,13 +99,15 @@ public class Harvesting implements Listener, CustomEnchantment {
     }
 
     private void handleBlockBreak(Block block) {
-        blocksBreakable--;
+        if (!Tag.LEAVES.isTagged(block.getType())) {
+            blocksBreakable--;
+        }
         currentHarvester.breakBlock(block);
     }
 
-    public static HashSet<Material> parseSet(ConfigurationSection configurationSection) {
+    public static HashSet<Material> parseSet(List<String> config) {
         HashSet<Material> parsedSet = new HashSet<>();
-        for (String key : configurationSection.getKeys(false)) {
+        for (String key : config) {
             parsedSet.add(Material.valueOf(key));
         }
         return parsedSet;
@@ -114,7 +116,7 @@ public class Harvesting implements Listener, CustomEnchantment {
     public static HashMap<String, HashSet<Material>> parseTrees(ConfigurationSection configurationSection) {
         HashMap<String, HashSet<Material>> parsedTrees = new HashMap<>();
         for (String key : configurationSection.getKeys(false)) {
-            parsedTrees.put(key, parseSet(Objects.requireNonNull(configurationSection.getConfigurationSection(key))));
+            parsedTrees.put(key, parseSet(Objects.requireNonNull(configurationSection.getStringList(key))));
         }
         return parsedTrees;
     }

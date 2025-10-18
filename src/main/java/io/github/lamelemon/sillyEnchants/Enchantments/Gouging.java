@@ -1,5 +1,6 @@
 package io.github.lamelemon.sillyEnchants.Enchantments;
 
+import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -18,6 +19,8 @@ public class Gouging implements Listener, CustomEnchantment {
     
     @EventHandler
     public void EntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
+        if (event.getDamageSource().getDamageType() != DamageType.PLAYER_ATTACK) return;
+
         LivingEntity damager = (LivingEntity) event.getDamager();
         EntityEquipment equipment = damager.getEquipment();
         if (equipment == null) return;

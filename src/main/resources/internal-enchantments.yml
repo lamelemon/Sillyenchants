@@ -1,4 +1,4 @@
-# This file is for any config of enchantments that we don't want users touching (e.g. error-prone configuration)
+# This file is for any config of enchantments that we don't want users touching (e.g. error / bug -prone configurations)
 
 beheading:
   description: "Beheading"
@@ -51,7 +51,7 @@ shockwave:
 harvesting:
   description: "Harvesting"
   weight: 1
-  max-level: 3
+  max-level: 5
   minimum-cost:
     base-cost: 1
     additional-cost: 1
@@ -144,12 +144,12 @@ smelting:
   active_slots:
     - MAINHAND
   supported-items:
-    - netherite_axe
-    - diamond_axe
-    - iron_axe
-    - stone_axe
-    - golden_axe
-    - wooden_axe
+    - netherite_pickaxe
+    - diamond_pickaxe
+    - iron_pickaxe
+    - stone_pickaxe
+    - golden_pickaxe
+    - wooden_pickaxe
   exclusive-with:
     - silk_touch
 
@@ -218,3 +218,20 @@ gouging:
     - golden_shovel
     - stone_shovel
     - wooden_shovel
+    - stick
+
+bash:
+  description: "Bash"
+  weight: 1
+  max-level: 2
+  minimum-cost:
+    base-cost: 1
+    additional-cost: 1
+  maximum-cost:
+    base-cost: 1
+    additional-cost: 1
+  anvil-cost: 1
+  active_slots:
+    - MAINHAND
+  supported-items:
+    - shield

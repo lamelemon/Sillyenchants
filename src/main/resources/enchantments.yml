@@ -7,7 +7,7 @@ shockwave:
 harvesting:
   disabled: false
   max-ore-blocks-broken: 5
-  max-tree-blocks-broken: 100 # multiplier for how many blocks each tier of the enchantment may break at most
+  max-tree-blocks-broken: 30 # multiplier for how many blocks each tier of the enchantment may break at most
 
 smelting:
   disabled: false
@@ -26,4 +26,7 @@ updraft:
   disabled: false
 
 gouging:
+  disabled: false
+
+bash:
   disabled: false
