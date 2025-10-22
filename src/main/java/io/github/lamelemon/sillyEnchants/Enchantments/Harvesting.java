@@ -41,12 +41,12 @@ public class Harvesting implements Listener, CustomEnchantment {
     public void onBlockBreak (BlockBreakEvent event) {
 
         Player player = event.getPlayer();
-        if (!player.isSneaking()) return;
+        if (!player.isSneaking() || currentHarvester == player) return;
 
         ItemStack currentTool = player.getInventory().getItemInMainHand();
 
-        // 1st condition basically checks if the current tool has the enchantment
-        if (!currentTool.containsEnchantment(enchantment) || currentHarvester == player) return;
+        // does the current tool have desired enchantment and is player not harvesting anything right now
+        if (!currentTool.containsEnchantment(enchantment)) return;
         currentHarvester = player;
 
         Block block = event.getBlock();
@@ -89,6 +89,10 @@ public class Harvesting implements Listener, CustomEnchantment {
 
         handleBlockBreak(block);
 
+        // scuffed code
+        // (checks above and then below as this version of the function is meant for trees)
+        Harvester(block.getRelative(0, 1, 0), allowedBlocks);
+        Harvester(block.getRelative(0, 1, 0), allowedBlocks);
         for (int y = -1; y <= 1; y++ ) {
             for (int z = -1; z <= 1; z++) {
                 for (int x = -1; x <= 1; x++) {
@@ -99,9 +103,7 @@ public class Harvesting implements Listener, CustomEnchantment {
     }
 
     private void handleBlockBreak(Block block) {
-        if (!Tag.LEAVES.isTagged(block.getType())) {
-            blocksBreakable--;
-        }
+        blocksBreakable--;
         currentHarvester.breakBlock(block);
     }
 

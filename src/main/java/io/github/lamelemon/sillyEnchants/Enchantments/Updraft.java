@@ -29,11 +29,9 @@ public class Updraft implements Listener, CustomEnchantment{
             int enchantLevel = chestItem.getEnchantmentLevel(enchantment);
 
             if (enchantLevel <= 0) return;
-            player.setVelocity(player.getVelocity().add(player.getLocation().getDirection().multiply(pow(enchantLevel * 3, 1 / 3.0))));
 
-            if (player.getGameMode() != GameMode.CREATIVE) {
-                player.damageItemStack(chestItem, enchantLevel * 3);
-            }
+            player.setVelocity(player.getVelocity().add(player.getLocation().getDirection().multiply(pow(enchantLevel * 3, 1 / 3.0))));
+            player.damageItemStack(chestItem, enchantLevel * 4);
         }
 
     }

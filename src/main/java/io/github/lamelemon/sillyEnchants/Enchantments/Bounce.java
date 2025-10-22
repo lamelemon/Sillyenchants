@@ -51,15 +51,18 @@ public class Bounce implements Listener, CustomEnchantment {
         PersistentDataContainer dataContainer = projectile.getPersistentDataContainer();
         int bounces = Objects.requireNonNullElse(dataContainer.get(arrowKey, PersistentDataType.INTEGER), 0);
 
-        if (event.getHitBlockFace() == null || bounces <= 0 || projectile.getVelocity().length() < 0.5) return;
+        // check if we hit a block, that we can bounce and if the speed at impact is large enough and not e.g. 0.0001
+        if (event.getHitBlockFace() == null || bounces <= 0 || projectile.getVelocity().length() < 0.1) return;
 
         projectile.getPersistentDataContainer().set(arrowKey, PersistentDataType.INTEGER, bounces - 1);
 
-        double shootMag = Objects.requireNonNullElse(projectile.getPersistentDataContainer().get(initialVelocityKey, PersistentDataType.DOUBLE), 0D);
-        Vector normal = event.getHitBlockFace().getDirection();
-        Vector startVel = projectile.getVelocity().clone().multiply(shootMag);
+        // Magnitude of the projectile's velocity when it was shot
+        double shootMag = Objects.requireNonNullElse(projectile.getPersistentDataContainer().get(initialVelocityKey, PersistentDataType.DOUBLE), 0d);
+        Vector normal = event.getHitBlockFace().getDirection(); // Normal of the block face (which way its pointing)
+        Vector startVel = projectile.getVelocity().normalize().multiply(shootMag); // Magnitude of the initial shot with the current direction of travel
         double dot = startVel.dot(normal);
-        Vector reflect = startVel.clone().subtract(normal.clone().multiply(2 * dot));
+        // reflect = startVel - (normal * 2 * dot) DO NOT CHANGE UNLESS YOU CHANGE THE LINE BELOW, THIS IS JUST FOR CLARITY
+        Vector reflect = startVel.subtract(normal.multiply(2 * dot)); // Velocity to get applied onto the arrow
 
         // Unstick arrow from the hit block
         projectile.teleport(
@@ -68,9 +71,9 @@ public class Bounce implements Listener, CustomEnchantment {
                         .toLocation(projectile.getWorld())
         );
 
+        // wait for 1 tick so that we can actually change the velocity (why do physics systems have to work like this with teleports)
         Bukkit.getScheduler().runTaskLater(SillyEnchants.getInstance(), () -> {
-            projectile.setVelocity(reflect);
-        },
+            projectile.setVelocity(reflect);},
                 1
         );
     }

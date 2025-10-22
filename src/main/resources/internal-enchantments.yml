@@ -3,7 +3,7 @@
 beheading:
   description: "Beheading"
   weight: 1
-  max-level: 3
+  max-level: 5
   minimum-cost:
     base-cost: 1
     additional-cost: 1
